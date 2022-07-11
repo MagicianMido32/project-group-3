@@ -39,6 +39,7 @@ CREATE TABLE `users` (
   `teamId` int(10) unsigned DEFAULT NULL COMMENT 'The id of the team the user belongs to',
   `familyName` varchar(255) DEFAULT NULL,
   `givenName` varchar(255) DEFAULT NULL,
+  `role` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `id_UNIQUE` (`id`),
   UNIQUE KEY `account_name_UNIQUE` (`accountId`)

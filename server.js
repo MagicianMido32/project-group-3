@@ -15,6 +15,8 @@ See the License for the specific language governing permissions and
 limitations under the License.
 
  */
+
+const PORT = process.env.PORT || 8081;
 const express = require('express');
 const fileUpload = require('express-fileupload');
 const bodyParser = require('body-parser');
@@ -706,7 +708,7 @@ process.on('SIGINT', function () {
 	process.exit();
 });
 
-app.listen(8081, function () {
+app.listen(PORT, function () {
 	util.log('Listening on 8081');
 	util.log('Configured url:' + config.dojoUrl);
 	util.log('Is secure:' + config.dojoUrl.startsWith('https'));
