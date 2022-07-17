@@ -23,6 +23,9 @@
 		<script src="static/reportCtrl.js"></script>
 		<script src="static/solutionCtrl.js"></script>
 		<script src="static/trainingModulesCtrl.js"></script>
+		<script src="static/joinInstructorCtrl.js"></script>
+		<script src="static/myStudentsCtrl.js"></script>
+		<!-- <script src="static/myStudentsCtrl.js"></script> -->
 
 		<link
 			href="/public/bootstrap/dist/css/bootstrap.min.css"
@@ -91,6 +94,22 @@
 						</li>
 						<li class="navbar-item" ng-class="{ active: isActive('/report')}">
 							<a class="nav-link" href="#!report">Report</a>
+						</li>
+
+						<li
+							ng-if="user.role === 'Student'"
+							class="navbar-item"
+							ng-class="{ active: isActive('/joinInstructor')}"
+						>
+							<a class="nav-link" href="#!joinInstructor">Join Instructor</a>
+						</li>
+
+						<li
+							ng-if="user.role === 'Instructor'"
+							class="navbar-item"
+							ng-class="{ active: isActive('/myStudents')}"
+						>
+							<a class="nav-link" href="#!myStudents">My Students</a>
 						</li>
 					</ul>
 

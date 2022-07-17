@@ -1,0 +1,52 @@
+<div
+	class="container"
+	ng-app="challengesApp"
+	ng-controller="joinInstructorCtrl"
+	ng-init="init()"
+>
+	<div ng-if="myInstructor !== null">
+		<div>
+			Your Instructor is: {{myInstructor.givenName}} {{myInstructor.familyName}}
+		</div>
+	</div>
+
+	<div>
+		<div
+			class="alert alert-danger"
+			id="codeError"
+			ng-if="isCodeErrorMessage && showForm"
+		>
+			<button type="button" class="close" ng-click="hideError()">
+				&times;
+			</button>
+			{{codeErrorMessage}}
+		</div>
+
+		<!-- <form ng-if="myInstructor === null" autocomplete="off"> -->
+
+		<form autocomplete="off">
+			<label for="InstructorListChoice">Select an Instructor: </label>
+			<select
+				id="InstructorListChoice"
+				name="InstructorListChoice"
+				ng-model="InstructorListChoice"
+				class="form-select"
+				aria-label="Instructor selector"
+				ng-change="onInstructorChange()"
+				ng-disabled="!showForm"
+			>
+				<option ng-repeat="instructor in instructors" value="{{instructor.id}}">
+					{{instructor.givenName}} {{instructor.familyName}}
+				</option>
+			</select>
+		</form>
+
+		<div
+			class="alert alert-success"
+			id="teamSuccessMessage"
+			ng-if="isCodeSuccessMessage && showForm"
+		>
+			{{codeSuccessMessage}}
+		</div>
+	</div>
+</div>

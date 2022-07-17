@@ -32,3 +32,10 @@ CREATE TABLE users (
   role CHAR(255)
 );
 
+CREATE TABLE studentInstructor (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  studentId INTEGER NOT NULL UNIQUE,
+  InstructorId INTEGER NOT NULL
+  
+);
+

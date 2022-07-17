@@ -34,10 +34,20 @@ app.config(function ($routeProvider) {
 			templateUrl: 'static/report.html',
 			controller: 'reportCtrl',
 		})
+		.when('/joinInstructor', {
+			templateUrl: 'static/joinInstructor.html',
+			controller: 'joinInstructorCtrl',
+		})
+		.when('/myStudents', {
+			templateUrl: 'static/myStudents.html',
+			controller: 'myStudentsCtrl',
+		})
+		
 		.when('/solution/:challengeId', {
 			templateUrl: 'static/solution.html',
 			controller: 'solutionCtrl',
 		});
+		
 });
 
 app.directive('highlightCode', [
@@ -361,6 +371,7 @@ app.controller('mainCtrl', [
 					$scope.user = user;
 					$scope.fullName = user.givenName + ' ' + user.familyName;
 					$scope.firstName = user.givenName;
+					$scope.role = user.role;
 
 					$scope.fetchTeams();
 

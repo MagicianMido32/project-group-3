@@ -1,0 +1,58 @@
+{
+	"Omniai": {
+		"givenName": "Omniai",
+		"familyName": "Solimani",
+		"role": "Instructor",
+		"passSalt": "ZUYfKzD+V3s+xOy2Rdj8rA==",
+		"passHash": "J3RMkltW9TtD7JYO2luxMIOKvpS4L/m7NO/fS3Pth+5Oa0baPub65yASG08rky/iEbDx/UMILrAGxuUM7xmusw=="
+	},
+	"Omnias": {
+		"givenName": "omniaS",
+		"familyName": "SolimanS",
+		"role": "Student",
+		"passSalt": "r0H8ryc9B5ZSyHA3FzKnaQ==",
+		"passHash": "ocndLI1MaaYYtgbnd9lsoZtCc9RDHUbzjmzureNMcM49UF8x6WareVsoqnjhNyPI8hhd/MsZ9gnKftwMiXTnnA=="
+	},
+	"student": {
+		"givenName": "student",
+		"familyName": "student",
+		"role": "Student",
+		"passSalt": "NrcFfuwE/X+UosCQj2g0TQ==",
+		"passHash": "ZPXev76LlgMDuWjOoeF8ByUx3BHsOHozoyJCpzsq9om0NfWEKqJhMM0qarrqU1alFxmLODQyVR+QWuhkLHwv+w=="
+	},
+	"studentt": {
+		"givenName": "studentt",
+		"familyName": "test",
+		"role": "Student",
+		"passSalt": "hbUQsoKNOBs0Q0zIgFYUcw==",
+		"passHash": "5CfUKjIGlkW6msumIKhs62Ihbfn/kSd7J3cdYOMWnGzrItWTUSX91QMEnSiGGUu6MAHuS+spCIMtn9Eo4FCwPw=="
+	},
+	"instructor": {
+		"givenName": "instructor",
+		"familyName": "noran",
+		"role": "Instructor",
+		"passSalt": "wEAXa2SFleVXP5+bRUI68w==",
+		"passHash": "8/bbo74VaveHjiSpjuL4kHU99XNL+h5z9b1jAgcsUbVxg1XklmknIlRiL76Iwp0goxpTwZDZHb9Onu6p4sA3Aw=="
+	},
+	"noran": {
+		"givenName": "Noran",
+		"familyName": "Tharowat",
+		"role": "Student",
+		"passSalt": "Qi/NfNLgJOxTmzrslreh/A==",
+		"passHash": "caABRrNjELnThx77yStuE5JJF8i5UH81Nb0GtkxLBV+4s0t3sUMHYWjIzxKg4vUP3xbSd8yhkiGn3+yd3qBe3A=="
+	},
+	"miguelgarzon": {
+		"givenName": "miguel",
+		"familyName": "garzon",
+		"role": "Instructor",
+		"passSalt": "FhxMOWbWr5b4cDAaFasnPA==",
+		"passHash": "4Y2NyldAN9dvWuU85ehDW7s1IWNe3wJowt5E4XvlonqKwby6hiS6WVegIXmQoxzY5MYkqplWhB2SA3YzNwq93w=="
+	},
+	"noranstudent": {
+		"givenName": "noran",
+		"familyName": "student",
+		"role": "Student",
+		"passSalt": "4xmLWcf2buCdJEtAC+mhzg==",
+		"passHash": "HxT6COlQZe6m7URUOjicimSLrigvzuYCI691E97g8oMFdbE6BTcbyp5y3uuw9v4TyEdeOwx2Dwul4aIB3aQgnA=="
+	}
+}

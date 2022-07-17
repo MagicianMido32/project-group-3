@@ -1,0 +1,97 @@
+<div
+	class="container"
+	ng-app="challengesApp"
+	ng-controller="myStudentsCtrl"
+	ng-init="init()"
+>
+	<!-- <h1 ng-repeat="student in myStudents">{{student.givenName}}</h1> -->
+
+	<table class="table table-bordered">
+		<thead>
+			<tr table style="width: 100%; text-align: left; background-color: orange">
+				<th scope="col">Student Name</th>
+
+				<th scope="col">Action</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr ng-repeat="student in myStudents">
+				<td>{{student.givenName}} {{student.familyName}}</td>
+
+				<td>
+					<button
+						type="button"
+						class="btn btn-secondary"
+						ng-click="setStudent(student.id)"
+						data-toggle="modal"
+						data-target="#editProgressModal"
+					>
+						Disable/Enable
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div id="editProgressModal" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Edit user view solution</h4>
+					<button
+						type="button"
+						class="close"
+						data-dismiss="modal"
+						aria-label="Close"
+					>
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div
+						class="alert alert-success"
+						id="editSuccessMessage"
+						ng-if="isSuccess"
+					>
+						Edit view solution successful.
+					</div>
+
+					<div class="alert alert-danger" id="editErrorMessage" ng-if="isError">
+						{{editErrorMessage}}
+					</div>
+
+					<div
+						ng-repeat="challenge in moduleChallengeDefinitions"
+						class="form-group"
+					>
+						<h3>{{challenge.name}}</h3>
+						<div
+							class="d-flex justify-content-between"
+							ng-repeat="ch in challenge.challenges"
+						>
+							<label for="{{ch.id}}">{{ch.name}}</label>
+							<input
+								type="checkbox"
+								name="{{ch.name}}"
+								value="{{ch.name}}"
+								class="form-control"
+								id="{{ch.id}}"
+							/>
+						</div>
+						<br />
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button
+						type="button"
+						class="btn btn-primary"
+						ng-click="EditViewSolution()"
+					>
+						Submit
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

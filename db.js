@@ -334,10 +334,100 @@ exports.fetchUsers = function (errCb, doneCb) {
 	});
 };
 
+exports.fetchInstructors = function (errCb, doneCb) {
+	var con = getConn();
+	var sql = 'SELECT id,givenName,familyName FROM users WHERE role = ?';
+	con.query(sql, ['Instructor'], function (err, result) {
+		if (err) handleErr(errCb, err);
+		else {
+			handleDone(doneCb, result);
+		}
+	});
+};
+
+// !!! -
+exports.fetchStudents = function (errCb, doneCb) {
+	var con = getConn();
+	var sql = 'SELECT id,givenName,familyName FROM users';
+	con.query(sql, function (err, result) {
+		if (err) handleErr(errCb, err);
+		else {
+			handleDone(doneCb, result);
+		}
+	});
+};
+
+exports.fetchMyInstructor = function (userId, errCb, doneCb) {
+	var con = getConn();
+	var sql = 'SELECT InstructorId FROM studentInstructor WHERE studentId = ?';
+
+	con.query(sql, [userId], function (err, result) {
+		if (err) handleErr(errCb, err);
+		else {
+			if (result.length >= 1) {
+				var instructor = result[0].InstructorId;
+				//execute one more query to get the Instructor
+				var sql = 'SELECT givenName,familyName FROM users WHERE id = ?';
+				con.query(sql, [instructor], function (err, result) {
+					if (err) handleErr(errCb, err);
+					else {
+						handleDone(doneCb, result);
+					}
+				});
+			} else handleDone(doneCb, null);
+		}
+	});
+
+	// async.waterfall(
+	// 	[
+	// 		//Execute insert statement
+	// 		function (cb) {
+	// 			con.query(sql, [userId], function (err, result) {
+	// 				if (err) cb(err);
+	// 				else {
+	// 					cb(null, result);
+	// 				}
+	// 			});
+	// 		},
+	// 		//Query for the instructor in the db
+	// 		function (result, cb) {
+	// 			exports.getUserById(userId);
+	// 		},
+	// 	],
+	// 	function (err) {
+	// 		util.log('Failed to insert team');
+	// 		handleErr(errCb, err);
+	// 	}
+	// );
+};
+
+//  !!! -
+exports.fetchMyStudents = function (userId, errCb, doneCb) {
+	var con = getConn();
+	var sql = 'SELECT studentId FROM studentInstructor WHERE InstructorId = ?';
+
+	con.query(sql, [userId], function (err, result) {
+		if (err) handleErr(errCb, err);
+		else {
+			if (result.length >= 1) {
+				var student = result[0].studentId;
+				//execute one more query to get the Instructor
+				var sql = 'SELECT givenName,familyName FROM users WHERE id = ?';
+				con.query(sql, [student], function (err, result) {
+					if (err) handleErr(errCb, err);
+					else {
+						handleDone(doneCb, result);
+					}
+				});
+			} else handleDone(doneCb, null);
+		}
+	});
+};
 //Creates a team in the database
 exports.insertTeam = function (user, team, errCb, doneCb) {
 	var con = getConn();
 	var sql = 'INSERT INTO teams (id, name, ownerid) VALUES (null, ?, ?);';
+
 	async.waterfall(
 		[
 			//Execute insert statement
@@ -380,6 +470,43 @@ exports.insertTeam = function (user, team, errCb, doneCb) {
 			handleErr(errCb, err);
 		}
 	);
+};
+
+// Create a student/Instructor pair
+exports.insertStudentInstructor = function (user, instructorId, errCb, doneCb) {
+	var con = getConn();
+	var sql =
+		'INSERT INTO studentInstructor (id, studentId, InstructorId) VALUES (null, ?, ?);';
+
+	con.query(sql, [user.id, instructorId], function (err, result) {
+		if (err) handleErr(errCb, err);
+		else handleDone(doneCb, result);
+	});
+};
+
+exports.fetchMyStudents = function (userId, errCb, doneCb) {
+	var con = getConn();
+	var sql = 'SELECT studentId FROM studentInstructor WHERE InstructorId = ?';
+
+	con.query(sql, [userId], function (err, result) {
+		if (err) handleErr(errCb, err);
+		else {
+			if (result.length >= 1) {
+				const allStudents = [];
+				result.forEach((element) => {
+					allStudents.push(element.studentId);
+				});
+
+				var sql = `SELECT id,givenName,familyName FROM users WHERE id IN (${allStudents})`;
+				con.query(sql, function (err, result) {
+					if (err) handleErr(errCb, err);
+					else {
+						handleDone(doneCb, result);
+					}
+				});
+			} else handleDone(doneCb, null);
+		}
+	});
 };
 
 //fetches the list of teams from the database

@@ -26,6 +26,8 @@ const fs = require('fs');
 const app = express();
 const uid = require('uid-safe');
 const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const checkJWT = require('./middleware/checkJWT');
 
 const db = require(path.join(__dirname, 'db'));
 const auth = require(path.join(__dirname, 'auth'));
@@ -42,6 +44,23 @@ var badgeHtml = fs.readFileSync(
 	path.join(__dirname, 'static/badge.html'),
 	'utf8'
 );
+
+var progressFile = null;
+var progressFilePath = '';
+try {
+	if (!util.isNullOrUndefined(config.progressFilePath)) {
+		let dataDir = util.getDataDir();
+		progressFilePath = path.join(dataDir, config.progressFilePath);
+
+		if (!fs.existsSync(progressFilePath)) {
+			//create the users file if not already there
+			fs.writeFileSync(progressFilePath, '{}', 'utf8');
+		}
+		progressFile = require(progressFilePath);
+	}
+} catch (ex) {
+	util.log(ex);
+}
 
 //INIT
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -225,6 +244,16 @@ app.post(
 		}),
 	],
 	function (req, res) {
+		user = req.session.passport.user;
+
+		const userJwt = jwt.sign(
+			{ id: user.id, accountId: user.accountId, role: user.role },
+			config.ACCESS_TOKEN_SECRET
+		);
+
+		req.session['jwt'] = userJwt;
+		// req.session = { ...req.session, jwt: userJwt };
+
 		res.redirect('/main');
 	}
 );
@@ -595,6 +624,186 @@ app.get('/api/users', (req, res) => {
 		res.send(users);
 	});
 });
+
+// Fetch all instructors
+app.get('/api/instructors', checkJWT, (req, res) => {
+	const role = req.user.role;
+
+	if (role === 'Student') {
+		db.fetchInstructors(null, function (users) {
+			res.send(users);
+		});
+	} else {
+		res.status(400).send();
+	}
+});
+
+// Fetch my instructor
+app.get('/api/myInstructor', checkJWT, (req, res) => {
+	const user = req.user;
+
+	if (user.role === 'Student') {
+		db.fetchMyInstructor(
+			user.id,
+			function () {
+				util.apiResponse(req, res, 400, 'Failed to fetch your instructor.');
+			},
+			function (result) {
+				res.send(result);
+			}
+		);
+	} else {
+		res.status(400).send();
+	}
+});
+
+// Fetch my students
+app.get('/api/myStudents', checkJWT, (req, res) => {
+	const user = req.user;
+
+	if (user.role === 'Instructor') {
+		db.fetchMyStudents(
+			user.id,
+			function () {
+				util.apiResponse(req, res, 400, 'Failed to fetch your Students.');
+			},
+
+			function (result) {
+				res.send(result);
+				// util.apiResponse(req, res, 200, 'Team created.', result);
+			}
+		);
+	} else {
+		res.status(400).send();
+	}
+});
+
+app.post('/api/viewSolutions', checkJWT, (req, res) => {
+	const user = req.user;
+
+	if (user.role === 'Instructor') {
+		console.log(req.body);
+		const progress = req.body.result;
+		const studentId = req.body.studentId;
+		if (progressFile == null) {
+			return util.apiResponse(req, res, 400, 'Progress File is not enabled');
+		}
+
+		if (util.isNullOrUndefined(progress)) {
+			return util.apiResponse(
+				req,
+				res,
+				400,
+				"Invalid request.'progress' not defined."
+			);
+		}
+		if (util.isNullOrUndefined(studentId)) {
+			return util.apiResponse(
+				req,
+				res,
+				400,
+				"Invalid request.'student' not defined."
+			);
+		}
+
+		progressFile[studentId] = progress;
+		//save to disk
+		var json = JSON.stringify(progressFile, null, '\t');
+		fs.writeFileSync(progressFilePath, json, 'utf8');
+
+		return util.apiResponse(req, res, 200, 'progress created/modified.');
+	} else {
+		return util.apiResponse(
+			req,
+			res,
+			400,
+			'Error in Editing the view solutions.'
+		);
+	}
+});
+
+app.get('/api/getviewSolutions', checkJWT, (req, res) => {
+	const user = req.user;
+	if (user.role === 'Student') {
+		if (progressFile == null) {
+			return util.apiResponse(req, res, 400, 'Progress File is not enabled');
+		}
+
+		if (user.id in progressFile) {
+			var progress = progressFile[user.id];
+
+			if (util.isNullOrUndefined(progress)) {
+				return util.apiResponse(
+					req,
+					res,
+					400,
+					"Invalid request.'progress' not defined."
+				);
+			}
+
+			return util.apiResponse(req, res, 200, 'success', progress);
+		} else {
+			return util.apiResponse(
+				req,
+				res,
+				400,
+				'Invalid request.user progress not found.'
+			);
+		}
+	} else {
+		return util.apiResponse(
+			req,
+			res,
+			400,
+			'Error in getting the view solutions.'
+		);
+	}
+});
+
+// Join Instructor
+app.post('/api/joinInstructor', checkJWT, (req, res) => {
+	const user = req.user;
+
+	if (user.role === 'Student') {
+		db.insertStudentInstructor(
+			user,
+			req.body.instructorId,
+			function () {
+				util.apiResponse(
+					req,
+					res,
+					500,
+					'Failed to assign student to instructor.'
+				);
+			},
+			function (result) {
+				res.send(result);
+			}
+		);
+	} else {
+		return util.apiResponse(req, res, 400, 'Error in Joining the Instructor.');
+	}
+});
+
+// Fetch my students
+// app.get('/api/myStudents', checkJWT, (req, res) => {
+// 	const user = req.user;
+
+// 	if (user.role === 'Instructor') {
+// 		db.fetchMyStudents(
+// 			user.id,
+// 			function () {
+// 				util.apiResponse(req, res, 400, 'Failed to fetch your Students.');
+// 			},
+
+// 			function (result) {
+// 				res.send(result);
+// 			}
+// 		);
+// 	} else {
+// 		res.status(400).send();
+// 	}
+// });
 
 //creates a team setting the current user as owner of the team
 app.post('/api/teams', auth.ensureApiAuth, (req, res) => {

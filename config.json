@@ -1,0 +1,15 @@
+{
+    "dojoUrl" : "http://localhost:8081",
+    "moduleUrls" : {
+        "blackBelt":"http://localhost:8080",
+        "securityCodeReviewMaster":"https://owasp.org/SecureCodingDojo/codereview101/?fromPortal"
+    },
+
+    "disabledModules":["secondDegreeBlackBelt","redTeam","blueTeam"],
+
+    "playLinks" : {},
+
+    "localUsersPath" : "localUsers.json",
+    "progressFilePath" : "progressFile.json",
+    "ACCESS_TOKEN_SECRET" : "dgfhnruarhijrnbjsfnaiosenroneaunhrou"
+}
