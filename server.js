@@ -283,8 +283,12 @@ app.get('/public/authFailure', (req, res) => {
 
 app.get('/public/badge/:code', async (req, res) => {
 	var code = req.params.code;
+	var url = req.url;
 
 	if (util.isNullOrUndefined(code)) {
+		return util.apiResponse(req, res, 400, 'Invalid request.');
+	}
+	if (util.isNullOrUndefined(url)) {
 		return util.apiResponse(req, res, 400, 'Invalid request.');
 	}
 
@@ -298,7 +302,7 @@ app.get('/public/badge/:code', async (req, res) => {
 	)}/image.png`;
 	let html = badgeHtml;
 	html = html.replace(/BADGE_IMG_SRC/g, imgSrc);
-	html = html.replace(/BADGE_URL/g, config.dojoUrl + req.url);
+	html = html.replace(/BADGE_URL/g, config.dojoUrl + url);
 	res.send(html);
 });
 
