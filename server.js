@@ -28,7 +28,7 @@ const uid = require('uid-safe');
 const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const checkJWT = require('./middleware/checkJWT');
-
+const RateLimit = require('express-rate-limit');
 const db = require(path.join(__dirname, 'db'));
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
@@ -62,7 +62,16 @@ try {
 	util.log(ex);
 }
 
+// set up rate limiter: maximum of five requests per minute
+
+var limiter = RateLimit({
+	windowMs: 15 * 60 * 1000, // 1 minute
+	max: 200,
+});
+
 //INIT
+
+app.use(limiter); // apply rate limiter to all requests
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cookieParser()); //lgtm [js/missing-token-validation]
