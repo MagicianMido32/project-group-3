@@ -54,5 +54,12 @@
 		"role": "Student",
 		"passSalt": "4xmLWcf2buCdJEtAC+mhzg==",
 		"passHash": "HxT6COlQZe6m7URUOjicimSLrigvzuYCI691E97g8oMFdbE6BTcbyp5y3uuw9v4TyEdeOwx2Dwul4aIB3aQgnA=="
+	},
+	"monyinstr": {
+		"givenName": "oomnia",
+		"familyName": "solimann",
+		"role": "Instructor",
+		"passSalt": "59QxuT1j/W5pjT/m1ay+kg==",
+		"passHash": "8C3bzzmc3SUGFCt5eKawdSlPxAtqjQcGiiQp5tew8ch0qqc6p99HpcP301b26a4+WiilFyQZDDv6ofOqUVy/aQ=="
 	}
 }
