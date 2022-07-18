@@ -31,7 +31,7 @@ var challengeNames = [];
 var solutions = [];
 var descriptions = [];
 var masterSalt = '';
-
+var sanitize = require("sanitize-filename");
 loadModules = function () {
 	let modsPath;
 	if (!util.isNullOrUndefined(process.env.DATA_DIR)) {
@@ -57,8 +57,9 @@ function getModulePath(moduleId) {
 }
 
 function getDefinifionsForModule(moduleId) {
+	var filename = sanitize(moduleId);
 	var defs = Object.freeze(
-		require(path.join(__dirname, getModulePath(moduleId), '/definitions.json'))
+		require(path.join(__dirname, getModulePath(filename), '/definitions.json'))
 	);
 	return defs;
 }
