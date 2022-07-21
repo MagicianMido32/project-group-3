@@ -61,5 +61,13 @@
 		"role": "Instructor",
 		"passSalt": "59QxuT1j/W5pjT/m1ay+kg==",
 		"passHash": "8C3bzzmc3SUGFCt5eKawdSlPxAtqjQcGiiQp5tew8ch0qqc6p99HpcP301b26a4+WiilFyQZDDv6ofOqUVy/aQ=="
+	},
+	"dojouser": {
+		"accountId": "Local_dojouser",
+		"familyName": "User",
+		"givenName": "Dojo",
+		"role": "Student",
+		"passSalt": "kKZIRI5+/PJWJdd0l8+aBg==",
+		"passHash": "+l9DSpuxIsi3gw7V0sWaePLaVTV4Dmf53ZRC3VdpR40nFChi9UMWiCUh+2dJ5KwwcaNG7ovfcnyVPwNNUKwJZg=="
 	}
 }

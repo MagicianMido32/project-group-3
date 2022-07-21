@@ -70,5 +70,29 @@
 		"cwe134": false,
 		"cwe502": false,
 		"quiz": false
+	},
+	"6": {
+		"cwe807": false,
+		"cwe862": false,
+		"cwe306": false,
+		"cwe311": false,
+		"cwe327": false,
+		"cwe759": false,
+		"cwe307": true,
+		"cwe190": true,
+		"cwe494": true,
+		"cwe601": false,
+		"cwe79": false,
+		"cwe352": false,
+		"cwe434": true,
+		"cwe611": true,
+		"cwe22": true,
+		"cwe863": false,
+		"cwe78": false,
+		"cwe89": false,
+		"cwe120": false,
+		"cwe134": false,
+		"cwe502": false,
+		"quiz": false
 	}
 }

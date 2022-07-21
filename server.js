@@ -29,6 +29,7 @@ const validator = require('validator');
 const jwt = require('jsonwebtoken');
 const checkJWT = require('./middleware/checkJWT');
 const RateLimit = require('express-rate-limit');
+const validUrl = require('valid-url');
 const db = require(path.join(__dirname, 'db'));
 const auth = require(path.join(__dirname, 'auth'));
 const util = require(path.join(__dirname, 'util'));
@@ -66,7 +67,7 @@ try {
 
 var limiter = RateLimit({
 	windowMs: 15 * 60 * 1000, // 1 minute
-	max: 200,
+	max: 400,
 });
 
 //INIT
@@ -289,6 +290,10 @@ app.get('/public/badge/:code', async (req, res) => {
 		return util.apiResponse(req, res, 400, 'Invalid request.');
 	}
 	if (util.isNullOrUndefined(url)) {
+		return util.apiResponse(req, res, 400, 'Invalid request.');
+	}
+
+	if (!validUrl.isUri(url)) {
 		return util.apiResponse(req, res, 400, 'Invalid request.');
 	}
 
@@ -695,7 +700,6 @@ app.post('/api/viewSolutions', checkJWT, (req, res) => {
 	const user = req.user;
 
 	if (user.role === 'Instructor') {
-		console.log(req.body);
 		const progress = req.body.result;
 		const studentId = req.body.studentId;
 		if (progressFile == null) {
