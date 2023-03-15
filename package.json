@@ -44,7 +44,7 @@
     "passport-slack": "0.0.7",
     "popper": "^1.0.1",
     "sanitize-filename": "^1.6.3",
-    "sqlite3": "^5.0.0",
+    "sqlite3": "^5.1.5",
     "uid-safe": "^2.1.4",
     "valid-url": "^1.0.9",
     "validator": "^13.6.0"
